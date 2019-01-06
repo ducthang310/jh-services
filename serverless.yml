@@ -20,10 +20,8 @@ service: jh-services # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: ap-southeast-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -55,8 +53,32 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  customerList:
+    handler: src/customer.list
+    events:
+    - http:
+        path: customers/list
+        method: get
+  customerGet:
+    handler: src/customer.getById
+    events:
+    - http:
+        path: customers/{id}
+        method: get
+
+  productList:
+    handler: src/product.list
+    events:
+    - http:
+        path: products/list
+        method: get
+  productGet:
+    handler: src/product.getById
+    events:
+    - http:
+        path: products/{id}
+        method: get
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
